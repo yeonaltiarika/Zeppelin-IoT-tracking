@@ -1,0 +1,16 @@
+%sql
+
+select * from enrichedEvents order by hoursDriven desc limit 10
+
+#To check certified drivers have less violations
+
+%sql
+
+select eventType, count(*) occurences from enrichedEvents group by eventType
+
+%sql
+
+select isCertified, count(*) numViolations from enrichedEvents where eventType in ("Unsafe tail distance", "Overspeed", "Lane Departure", "Unsafe following distance") group by isCertified
+
+%sql
+select eventType, isCertified, hoursDriven from enrichedEvents group by eventType, isCertified, hoursDriven
