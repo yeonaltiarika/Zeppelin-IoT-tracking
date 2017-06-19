@@ -1,0 +1,9 @@
+%sql
+
+select hoursDriven, eventType, count(*) numOccurences from enrichedEvents where eventType not in ("Normal") group by hoursDriven, eventType order by hoursDriven
+
+SELECT IF(((`enrichedEvents`.`eventType` = 'Lane Departure') OR (`enrichedEvents`.`eventType` = 'Overspeed') OR (`enrichedEvents`.`eventType` = 'Unsafe following distance') OR (`enrichedEvents`.`eventType` = 'Unsafe tail distance')),'Lane Departure',`enrichedEvents`.`eventType`) AS `grouped_events`, `enrichedEvents`.`hoursDriven` AS `none_hoursdriven_ok`, SUM(1) AS `sum_number_of_records_ok` FROM `enrichedEvents` `enrichedEvents` GROUP BY IF(((`enrichedEvents`.`eventType` = 'Lane Departure') OR (`enrichedEvents`.`eventType` = 'Overspeed') OR (`enrichedEvents`.`eventType` = 'Unsafe following distance') OR (`enrichedEvents`.`eventType` = 'Unsafe tail distance')),'Lane Departure',`enrichedEvents`.`eventType`), `enrichedEvents`.`hoursDriven`
+
+%sql
+
+SELECT IF(((eventType = 'Lane Departure') OR (eventType = 'Overspeed') OR (eventType = 'Unsafe following distance') OR (eventType = 'Unsafe tail distance')),'Lane Departure', eventType) AS `grouped_events`, isCertified AS num_certified, SUM(1) AS sum_number_of_records FROM enrichedEvents enrichedEvents GROUP BY IF(((eventType = 'Lane Departure') OR (eventType = 'Overspeed') OR (eventType = 'Unsafe following distance') OR (eventType = 'Unsafe tail distance')),'Lane Departure', eventType), isCertified
