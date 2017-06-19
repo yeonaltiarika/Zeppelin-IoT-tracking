@@ -1,0 +1,35 @@
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+val eventsFile = sc.textFile("hdfs:///user/zeppelin/iotdemo/enrichedEvents")
+
+case class Event(eventType: String, 
+                isCertified: String, 
+                paymentScheme: String, 
+                hoursDriven: Int, 
+                milesDriven: Int, 
+                lat: Float, 
+                long: Float, 
+                isFoggy: Int, 
+                isRainy: Int, 
+                isWindy: Int)
+
+val eventsRDD = eventsFile.map(s => s.split(",")).map(
+    s => Event(s(0),        //eventType
+            s(1).replaceAll("\"", ""),  //isCertified
+            s(2).replaceAll("\"", ""),  //paymentScheme
+            s(3).toInt,     //hoursDriven
+            s(4).toInt,     //milesDriven
+            s(5).toFloat,   //latitude
+            s(6).toFloat,   //longitude
+            s(7).toInt,     //isFoggy
+            s(8).toInt,     //isRainy
+            s(9).toInt      //isWindy
+        )
+    )
+
+//             scaleEvents(s(3).toInt),     //hoursDriven
+
+
+eventsRDD.count
+
+eventsRDD.toDF().registerTempTable("enrichedEvents")
