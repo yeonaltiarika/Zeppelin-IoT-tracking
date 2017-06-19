@@ -1,0 +1,3 @@
+%sql
+
+select lat, long, eventType, isFoggy from enrichedEvents where eventType not in ('Normal') and isFoggy = 1 group by lat, long, eventType, isFoggy 
