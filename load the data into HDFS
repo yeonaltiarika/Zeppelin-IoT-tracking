@@ -1,0 +1,14 @@
+%sh
+whoami
+
+curl -sSL -O "https://www.dropbox.com/s/ggj1robwxpl9vrt/iotdemo-notebook-data.zip"
+unzip iotdemo-notebook-data.zip
+
+hadoop fs -mkdir -p /user/zeppelin/iotdemo
+hadoop fs -copyFromLocal -f trainingData /user/zeppelin/iotdemo/
+hadoop fs -copyFromLocal -f enrichedEvents /user/zeppelin/iotdemo/
+
+hadoop fs -ls /user/zeppelin/iotdemo/
+
+%sh
+hadoop fs -cat /user/zeppelin/iotdemo/enrichedEvents | tail -n 1
